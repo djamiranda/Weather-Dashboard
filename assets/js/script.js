@@ -26,5 +26,25 @@ $(document).ready(function () {
           $("#history").prepend($("<button>").attr({class: "btn btn-outline btn-xl clear"}).text("clear history"));
         }
       }
+      $(document).on("click", ".clear", function(event) {
+        event.preventDefault();
+        cityData = [];
+        localStorage.removeItem("cityData")
+        $("#history").empty();
+        fetchStoredData();
+      });
+    
+      fetchStoredData();
+    
+      function storeCitiesData() {
+        localStorage.setItem("cityData", JSON.stringify(cityData));
+      }
+    
+      function capitalizeCity(city) {
+        return city
+          .replace(/(\B)[^ ]*/g, match => (match.toLowerCase()))
+          .replace(/^[^ ]/g, match => (match.toUpperCase()));
+      }
+      
 }
 )
