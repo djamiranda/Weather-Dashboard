@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var APIKEY = "&appID=79aa6f208e3465fd8b2baea62924e6e9";
+    var APIKEY = "&appID=79aa6f208e3465fd8b2baea62924e6e9"
     var baseURL = "https://api.openweathermap.org/data/2.5/forecast?";
     var cityData = []
 
@@ -92,6 +92,7 @@ $(document).ready(function () {
           cityData[index].lat +
           "&lon=" +
           cityData[index].lon +
+          "&units=imperial" +
           APIKEY;
     
         $.ajax({
@@ -99,7 +100,7 @@ $(document).ready(function () {
           method: "GET",
         }).then(function (response) {
           var forecast = response.list;
-          var temperature = (forecast[0].main.temp - 273.15 * 1.8 + 32).toFixed(0);
+          var temperature = (forecast[0].main.temp).toFixed(0);
           var today = dayjs(forecast[0].dt_txt).format("MM/DD/YYYY");
     
           var weatherImg =
@@ -116,7 +117,7 @@ $(document).ready(function () {
               "</h2>"
           );
           $(".temp").text("Temperature: " + temperature + " °F");
-          $(".wind").text("Wind: " + forecast[0].wind.speed / 1.609344 + " MPH");
+          $(".wind").text("Wind: " + forecast[0].wind.speed + " MPH");
           $(".humidity").text("Humidity: " + forecast[0].main.humidity + "%");
         
           $("#forecast").empty();
@@ -145,12 +146,12 @@ $(document).ready(function () {
             .addClass("card-text")
             .html(
               "Temp: " +
-                (forecast[i].main.temp - 273.15 * 1.8 + 32).toFixed(0) +
-                " &#8451;"
+                (forecast[i].main.temp).toFixed(0) +
+                " &#8457;"
             );
           var wind = $("<p>")
             .addClass("card-text")
-            .html("Wind: " + (forecast[i].wind.speed / 1.609344).toFixed(2) + " MPH");
+            .html("Wind: " + (forecast[i].wind.speed).toFixed(2) + " MPH");
           var humidity = $("<p>")
             .addClass("card-text")
             .html("Humidity: " + forecast[i].main.humidity.toFixed(2) + "%");
