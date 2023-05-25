@@ -118,3 +118,50 @@ $(document).ready(function () {
           $(".temp").text("Temperature: " + temperature + " °F");
           $(".wind").text("Wind: " + forecast[0].wind.speed / 1.609344 + " MPH");
           $(".humidity").text("Humidity: " + forecast[0].main.humidity + "%");
+        
+          $("#forecast").empty();
+        $("#forecastTitle").html("<h2>5 Day Forecast</h2>");
+      
+      for (var i in forecast) {
+        var date = dayjs(forecast[i].dt_txt);
+
+        if (dayjs(date).format("HH:mm:ss") == "12:00:00") {
+          var col = $("<section>").addClass("col-md-2 col-12");
+          var card = $("<section>").addClass("card");
+          var body = $("<section>").addClass("card-body");
+          var forecastDay = $("<h6>")
+            .addClass("card-title")
+            .text(dayjs(date).format("dddd"))
+          var forecastDate = $("<h6>").addClass("card-title").text(dayjs(date).format("MM/DD/YYYY"));
+          weatherImg = $("<img>").attr({
+            width: "50px",
+            height: "50px",
+            src:
+              "https://openweathermap.org/img/wn/" +
+              forecast[i].weather[0].icon +
+              "@2x.png",
+          });
+          temperature = $("<p>")
+            .addClass("card-text")
+            .html(
+              "Temp: " +
+                (forecast[i].main.temp - 273.15 * 1.8 + 32).toFixed(0) +
+                " &#8451;"
+            );
+          var wind = $("<p>")
+            .addClass("card-text")
+            .html("Wind: " + (forecast[i].wind.speed / 1.609344).toFixed(2) + " MPH");
+          var humidity = $("<p>")
+            .addClass("card-text")
+            .html("Humidity: " + forecast[i].main.humidity.toFixed(2) + "%");
+          body.append(forecastDay, forecastDate, weatherImg, temperature, wind, humidity);
+          card.append(body);
+          col.append(card);
+          $("#forecast").append(col);
+        }
+      }
+      return;
+    });
+    return;
+  }
+});
