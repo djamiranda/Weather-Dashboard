@@ -45,6 +45,76 @@ $(document).ready(function () {
           .replace(/(\B)[^ ]*/g, match => (match.toLowerCase()))
           .replace(/^[^ ]/g, match => (match.toUpperCase()));
       }
-      
-}
-)
+      $(document).on("click", ".search-button", function (event) {
+        event.preventDefault();
+    
+        var city = $("#search-input").val().trim();
+        city = capitalizeCity(city);
+        var savedCity = $(event.target).text(); 
+        if (!city && savedCity != $("#search-button").text()) {
+          city = $(event.target).text(); 
+        }
+        else if (!city) {
+          return;
+        }
+        else {
+          $("#search-input").val(""); 
+        }
+        var index = getStoredData(city); 
+        if (index < 0) { 
+          var queryURL = "https://api.openweathermap.org/geo/1.0/direct?q=";
+    
+          $.ajax({ 
+            url: queryURL + city + APIKEY,
+            method: "GET",
+          }).then(function (response) {
+            cityData.push({
+              name: response[0].name,
+              lat: response[0].lat,
+              lon: response[0].lon,
+            });
+            storeCitiesData();
+            fetchStoredData();
+            index = cityData.length - 1;
+            getAndRenderData(index);
+          });
+        }
+        
+        else {
+          getAndRenderData(index);
+        }
+      });
+    
+      function getAndRenderData(index) {
+        queryURL =
+          baseURL +
+          "lat=" +
+          cityData[index].lat +
+          "&lon=" +
+          cityData[index].lon +
+          APIKEY;
+    
+        $.ajax({
+          url: queryURL,
+          method: "GET",
+        }).then(function (response) {
+          var forecast = response.list;
+          var temperature = (forecast[0].main.temp - 273.15 * 1.8 + 32).toFixed(0);
+          var today = dayjs(forecast[0].dt_txt).format("MM/DD/YYYY");
+    
+          var weatherImg =
+            "<img width='50px' height='50px' src='https://openweathermap.org/img/wn/" +
+            forecast[0].weather[0].icon +
+            "@2x.png'>";
+          $(".city").html(
+            "<h2>" +
+              cityData[index].name +
+              " (" +
+              today +
+              ") " +
+              weatherImg +
+              "</h2>"
+          );
+          $(".temp").text("Temperature: " + temperature + " °F");
+          $(".wind").text("Wind: " + forecast[0].wind.speed / 1.609344 + " MPH");
+          $(".humidity").text("Humidity: " + forecast[0].main.humidity + "%");
