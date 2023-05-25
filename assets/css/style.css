@@ -1,3 +1,77 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  /* color scheme sourced from http://khroma.co/generator/ */
+  :root {
+    --outer-space: #33393f;
+    --bright-turquoise: #2aefcb;
+    --gin: #e0eae4;
+    --heliotrope: #e866ec;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    line-height: 1.5;
+    background-color: #4279d0;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+
+  }
+  
+  p {
+    margin: 0;
+  }
+  
+.input-group,  .form-group, .input-group-append, .form {
+  width: 100%;
+  padding-right: 0px;
+
+  margin-right: 0px !important;
+}
+
+hr.weather {
+  border-top: 2px solid grey;
+  width: 100%;
+}
+
+.weather-search {
+      border-radius: 5px !important;
+      font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
+}
+.today {
+  padding-left: 0px;
+}
+#forecastTitle {
+  padding-left: 5px;
+}
+.card {
+    background-color: #4d5a66;
+    padding-right: 0px !important;
+    padding-left: 5px !important;
+}
+
+.col-md-2 {
+    padding-right: 0px !important;
+    padding-left: 5px !important;
+}
+.col-md-3 {
+  padding-right: 0px !important;
+  padding-left: 5px !important;
+}
+.col-md-9 {
+  padding-right: 0px !important;
+  padding-left: 20px !important;
+}
 .card-body {
     padding-left: 0px;
   }
