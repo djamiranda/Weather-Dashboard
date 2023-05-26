@@ -2,7 +2,7 @@ $(document).ready(function () {
     var APIKEY = "&appID=79aa6f208e3465fd8b2baea62924e6e9"
     var baseURL = "https://api.openweathermap.org/data/2.5/forecast?";
     var cityData = []
-
+// fetches locally stored data, if available
     function getStoredData(city) {
         fetchStoredData();
         var index = -1;
@@ -14,6 +14,7 @@ $(document).ready(function () {
         }
         return index;
       }
+    //   fetch & render search history
       function fetchStoredData() {
         var tempCityData = localStorage.getItem("cityData");
         if (tempCityData) {
@@ -35,16 +36,17 @@ $(document).ready(function () {
       });
     
       fetchStoredData();
-    
+    // stores cities locally
       function storeCitiesData() {
         localStorage.setItem("cityData", JSON.stringify(cityData));
       }
-    
+    // gets city from search & capitalizes it
       function capitalizeCity(city) {
         return city
           .replace(/(\B)[^ ]*/g, match => (match.toLowerCase()))
           .replace(/^[^ ]/g, match => (match.toUpperCase()));
       }
+    //   search button
       $(document).on("click", ".search-button", function (event) {
         event.preventDefault();
     
@@ -63,7 +65,7 @@ $(document).ready(function () {
         var index = getStoredData(city); 
         if (index < 0) { 
           var queryURL = "https://api.openweathermap.org/geo/1.0/direct?q=";
-    
+    // api call for  lat & long city then stores locally
           $.ajax({ 
             url: queryURL + city + APIKEY,
             method: "GET",
@@ -84,7 +86,7 @@ $(document).ready(function () {
           getAndRenderData(index);
         }
       });
-    
+    // gets lat & long in imperial units
       function getAndRenderData(index) {
         queryURL =
           baseURL +
@@ -102,7 +104,7 @@ $(document).ready(function () {
           var forecast = response.list;
           var temperature = (forecast[0].main.temp).toFixed(0);
           var today = dayjs(forecast[0].dt_txt).format("MM/DD/YYYY");
-    
+    // todays data & image
           var weatherImg =
             "<img width='50px' height='50px' src='https://openweathermap.org/img/wn/" +
             forecast[0].weather[0].icon +
@@ -119,10 +121,10 @@ $(document).ready(function () {
           $(".temp").text("Temperature: " + temperature + " °F");
           $(".wind").text("Wind: " + forecast[0].wind.speed + " MPH");
           $(".humidity").text("Humidity: " + forecast[0].main.humidity + "%");
-        
+        // forecast html
           $("#forecast").empty();
         $("#forecastTitle").html("<h2>5 Day Forecast</h2>");
-      
+    //   for loop forecast section
       for (var i in forecast) {
         var date = dayjs(forecast[i].dt_txt);
 
